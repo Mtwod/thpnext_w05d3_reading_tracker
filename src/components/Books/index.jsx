@@ -30,8 +30,22 @@ const Books = () => {
     }
   };
 
-  const displayBooks = (searchInput) => {
-    const toDisplay = books.all.filter((book) => book.title.toLowerCase().includes(searchInput));
+  const displaySearchedBooks = (searchInput, byFavorites, byReadLaters) => {
+    let toDisplay = books.all.filter((book) => book.title.toLowerCase().includes(searchInput));
+
+    if (byFavorites) {
+      toDisplay = toDisplay.filter((book, bookIndex) => {
+        const bookKey = `${book.isbn}-${bookIndex}`;
+        return favorites.includes(bookKey);
+      });
+    }
+
+    if (byReadLaters) {
+      toDisplay = toDisplay.filter((book, bookIndex) => {
+        const bookKey = `${book.isbn}-${bookIndex}`;
+        return readLaters.includes(bookKey);
+      });
+    }
     setBooks({ all: books.all, display: toDisplay });
   };
 
@@ -42,7 +56,7 @@ const Books = () => {
   return (
     <div className="Books">
       <p>Search your favorite book by typing here:</p>
-      <SearchBar onInputValueChange={displayBooks} />
+      <SearchBar onChange={displaySearchedBooks} />
       <ul className="row">
         {!books && (
           <p>Loading books...</p>
