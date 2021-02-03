@@ -1,0 +1,8 @@
+.BookCard {
+  width: 45rem;
+
+  &__thumbnail {
+    height: 10rem;
+    object-fit: contain;
+  }
+}
