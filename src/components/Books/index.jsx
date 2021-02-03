@@ -1,3 +1,4 @@
+import BookCard from 'components/BookCard';
 import React from 'react';
 
 const Books = () => {
@@ -20,12 +21,13 @@ const Books = () => {
   }, []);
 
   return (
-    <div className="Books">
-      <h2>Here will be the list of books!</h2>
+    <ul className="Books">
       {books && (
-        <p>{books[0].title}</p>
+        {books.map((bookData) => (
+          <BookCard data={bookData} key={bookData.isbn} />
+        ))}
       )}
-    </div>
+    </ul>
   );
 };
 
