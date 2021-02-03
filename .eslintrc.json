@@ -18,5 +18,13 @@
         "react"
     ],
     "rules": {
+      "react/prop-types": "off"
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "moduleDirectory": ["node_modules", "src/"]
+        }
+      }
     }
 }
