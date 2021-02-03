@@ -1,5 +1,6 @@
 import React from 'react';
 import BookCard from 'components/BookCard';
+import SearchBar from 'components/SearchBar';
 
 const Books = () => {
   const [books, setBooks] = React.useState();
@@ -10,7 +11,7 @@ const Books = () => {
     const response = await fetch('https://gist.githubusercontent.com/MathisDYKDan/76bc73ec77481ccb82677cc7c0d8b524/raw/a23c99027b9bfc1bfdb22e22ddcb4301a5f870ee/books.json');
     const data = await response.json();
     const booksList = data.books[0];
-    setBooks(booksList);
+    setBooks({ all: booksList, display: booksList });
   };
 
   const toggleFavorite = (bookId) => {
@@ -29,31 +30,40 @@ const Books = () => {
     }
   };
 
+  const displayBooks = (searchInput) => {
+    const toDisplay = books.all.filter((book) => book.title.toLowerCase().includes(searchInput));
+    setBooks({ all: books.all, display: toDisplay });
+  };
+
   React.useEffect(() => {
     fetchBooks();
   }, []);
 
   return (
-    <ul className="Books row">
-      {books && (
-        books.map((bookData, bookIndex) => {
-          const bookKey = `${bookData.isbn}-${bookIndex}`;
-          return (
-            <BookCard
-              data={bookData}
-              key={bookKey}
-              onFavorite={() => { toggleFavorite(bookKey); }}
-              isFav={favorites.includes(bookKey)}
-              onReadLater={() => { toggleReadLater(bookKey); }}
-              isReadLater={readLaters.includes(bookKey)}
-            />
-          );
-        })
-      )}
-      {!books && (
-        <p>Loading books...</p>
-      )}
-    </ul>
+    <div className="Books">
+      <p>Search your favorite book by typing here:</p>
+      <SearchBar onInputValueChange={displayBooks} />
+      <ul className="row">
+        {!books && (
+          <p>Loading books...</p>
+        )}
+        {books && (
+          books.display.map((bookData, bookIndex) => {
+            const bookKey = `${bookData.isbn}-${bookIndex}`;
+            return (
+              <BookCard
+                data={bookData}
+                key={bookKey}
+                onFavorite={() => { toggleFavorite(bookKey); }}
+                isFav={favorites.includes(bookKey)}
+                onReadLater={() => { toggleReadLater(bookKey); }}
+                isReadLater={readLaters.includes(bookKey)}
+              />
+            );
+          })
+        )}
+      </ul>
+    </div>
   );
 };
 
