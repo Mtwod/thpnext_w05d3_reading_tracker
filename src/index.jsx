@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Books from 'components/Books';
 
 const App = () => (
   <div>
-    <h1>Hello World</h1>
-    <p>This is an introduction, place your components here!</p>
+    <h1>Book list</h1>
+    <Books />
   </div>
 );
 
